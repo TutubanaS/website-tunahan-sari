@@ -1,22 +1,23 @@
-<!-- src/components/Header.vue -->
 <template>
     <header class="header">
       <div class="nav-container">
         <div class="header-line"></div>
         <nav class="navigation">
-          <ul>
-            <li :class="{ active: activeSection === 'home' }">
-              <a href="#" @click.prevent="setActiveSection('home')">Home</a>
+          <ul ref="navList">
+            <li :class="{ active: activeSection === 'home' }" ref="homeNavItem">
+              <a href="#" @click.prevent="setActiveSection('home')">home</a>
             </li>
-            <li :class="{ active: activeSection === 'projects' }">
-              <a href="#" @click.prevent="setActiveSection('projects')">Projects</a>
+            <li :class="{ active: activeSection === 'projects' }" ref="projectsNavItem">
+              <a href="#" @click.prevent="setActiveSection('projects')">skills & projects</a>
             </li>
-            <li :class="{ active: activeSection === 'experience' }">
-              <a href="#" @click.prevent="setActiveSection('experience')">Experience</a>
+            <li :class="{ active: activeSection === 'experience' }" ref="experienceNavItem">
+              <a href="#" @click.prevent="setActiveSection('experience')">experience</a>
             </li>
-            <li :class="{ active: activeSection === 'contact' }">
-              <a href="#" @click.prevent="setActiveSection('contact')">Contact & FAQ</a>
+            <li :class="{ active: activeSection === 'contact' }" ref="contactNavItem">
+              <a href="#" @click.prevent="setActiveSection('contact')">contact & faq</a>
             </li>
+            <!-- Sliding indicator -->
+            <div class="nav-indicator" :style="indicatorStyle"></div>
           </ul>
         </nav>
       </div>
@@ -24,27 +25,34 @@
       <div class="content-area">
         <transition name="fade" mode="out-in">
           <div :key="activeSection">
+            <!-- Home content -->
             <div v-if="activeSection === 'home'">
-              <!-- Home content -->
               <p class="text-home">
-                born in 2001 in ankara, türkiye, and now based in eindhoven, netherlands.
+                born in 2001 in ankara, türkiye, and now based in eindhoven, netherlands. graduated from tu eindhoven with a bachelor's in computer science.
               </p>
               <p class="text-home">
-                since i co-founded a company to revolutionize how we engage with art, i thought i need a website for myself to reflect on my design understanding, thus I created this website.
+                since i co-founded a company to revolutionize how we engage with art, i realized i needed a website to reflect my design understanding. so, i created this website.
               </p>
               <p class="text-home">
                 i offer software development and AI/ML services through vista technologies.
               </p>
               <p class="text-home">
-                next to software development, i paint and design. the website design/code belongs to me.
+                next to software development, i paint and design. the website's design/code belongs to me.
               </p>
             </div>
+            <!-- Projects content -->
             <div v-else-if="activeSection === 'projects'">
-              <!-- Projects content -->
+              <div class="tech-stack-container">
+                <h3 class="title-experience-white">skills; tech-stack</h3>
+                <p class="text-experience-white">python, pyTorch, tensorflow, langchain, openai, fastapi, django</p>
+                <p class="text-experience-white">kotlin, java, postgresql, docker, kubernetes, digitalocean, google cloud</p>
+                <p class="text-experience-white">javascript, typescript, vue, figma</p>
+              </div>
               <h2 class="title-projects">ArtVista app - tech lead:</h2>
               <p class="text-projects">
                 need a digital museum guide or shazam for artworks? artvista is your app.
                 i’m in charge of the back-end, ai systems, and product designs, together with vlad.
+                within artvista, we train and deploy computer vision models, transformers, and gans to recognize art. build rag pipelines, and manage the app’s infrastructure.
               </p>
               <div class="project-links">
                 <a href="https://artvista.app" target="_blank" rel="noopener noreferrer">website</a>
@@ -52,8 +60,8 @@
                 <a href="https://apps.apple.com/nl/app/artvista-art-companion/id6503986684?l=en-GB" target="_blank" rel="noopener noreferrer">ios</a>
               </div>
             </div>
+            <!-- Experience content -->
             <div v-else-if="activeSection === 'experience'">
-              <!-- Experience content -->
               <div class="experience-item">
                 <h3 class="title-experience">2023-2025</h3>
                 <p class="text-experience">software & machine learning engineer @ enter, eindhoven</p>
@@ -66,22 +74,22 @@
                 <h3 class="title-experience">2021-2023</h3>
                 <p class="text-experience">tutoring assistant @ tu eindhoven, eindhoven</p>
               </div>
-              <p class="text-experience">
-                for more details, check and request my cv through linkedin, available here.
-                <br />
-              </p>
             </div>
+            <!-- Contact & FAQ content -->
             <div v-else-if="activeSection === 'contact'">
-              <!-- Contact & FAQ content -->
               <div class="faq-section">
-                <h3 class="faq-question">how can you be a software and machine learning engineer at once?</h3>
-                <p class="faq-answer">
-                  i did computer science and began as a machine learning engineer but soon realized i needed to build APIs, manage databases, and write robust back-end code for all this AI to work. since one depends on the other, i work with both.
-                </p>
-                <h3 class="faq-question">do you freelance?</h3>
-                <p class="faq-answer">
-                  yes, you can contact me from the following.
-                </p>
+                <div class="faq-pair">
+                  <h3 class="faq-question">how can you be a software and machine learning engineer at once?</h3>
+                  <p class="faq-answer">
+                    i did computer science and began as a machine learning engineer but soon realized i needed to build APIs, manage databases, and write robust back-end code for all this AI to work. since one depends on the other, i work with both.
+                  </p>
+                </div>
+                <div class="faq-pair">
+                  <h3 class="faq-question">do you freelance or want my cv?</h3>
+                  <p class="faq-answer">
+                    sure, you can contact me through the following.
+                  </p>
+                </div>
                 <div class="contact-links">
                   <a href="mailto:tunahansari11@gmail.com" target="_blank" rel="noopener noreferrer">email</a>
                   <a href="https://www.linkedin.com/in/tunahan-sari" target="_blank" rel="noopener noreferrer">linkedin</a>
@@ -101,11 +109,40 @@
     data() {
       return {
         activeSection: 'home', // Default section
+        indicatorStyle: {
+          left: '0px',
+          width: '0px',
+        },
       }
+    },
+    mounted() {
+      this.$nextTick(() => {
+        this.updateIndicator();
+      });
+      window.addEventListener('resize', this.updateIndicator);
+    },
+    beforeDestroy() {
+      window.removeEventListener('resize', this.updateIndicator);
     },
     methods: {
       setActiveSection(section) {
-        this.activeSection = section
+        this.activeSection = section;
+        this.$nextTick(() => {
+          this.updateIndicator();
+        });
+      },
+      updateIndicator() {
+        const activeNavItem = this.$refs[`${this.activeSection}NavItem`];
+        if (activeNavItem) {
+          const navListRect = this.$refs.navList.getBoundingClientRect();
+          const itemRect = activeNavItem.getBoundingClientRect();
+          const left = itemRect.left - navListRect.left;
+          const width = itemRect.width;
+          this.indicatorStyle = {
+            left: `${left}px`,
+            width: `${width}px`,
+          };
+        }
       },
     },
   }
@@ -125,6 +162,7 @@
   
   /* Navigation Styles */
   .navigation {
+    position: relative; /* Position relative for absolute positioning of the indicator */
     width: 100%;
   }
   
@@ -134,11 +172,11 @@
     justify-content: space-between;
     margin: 0;
     padding: 0;
-    width: 100%;
+    position: relative;
   }
   
   .navigation li {
-    /* Add any additional styling here */
+    position: relative;
   }
   
   .navigation a {
@@ -147,18 +185,27 @@
     font-weight: 300;
     font-size: 18px;
     padding: 5px 10px; /* Adjust padding as needed */
-    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
-  }
-  
-  .navigation li.active a {
-    background-color: rgb(255,255,255,0.8); /* White background */
-    color: #000; /* Text color changes to black */
-    font-weight: 500;
+    transition: color 0.3s; /* Smooth transition for text color */
   }
   
   .navigation a:hover {
-    text-decoration: underline;
+    text-decoration: none; /* Removes the underline on hover */
     cursor: pointer;
+  }
+  
+  .nav-indicator {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+    transition: left 0.5s cubic-bezier(0.4, 0, 0.2, 1), width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none; /* Ignore pointer events */
+    z-index: -1; /* Place behind the navigation items */
+  }
+  
+  .navigation li.active a {
+    color: #000; /* Text color changes to black when active */
   }
   
   /* Adjusted nav-container styles */
@@ -178,6 +225,11 @@
     font-weight: 400; /* Adjust as desired */
   }
   
+  .title-experience-white {
+    font-weight: 500; /* Adjust as desired */
+    font-size: 22.5px;
+  }
+  
   /* Styles for text elements */
   .text-home {
     font-weight: 300; /* Adjust as desired */
@@ -191,30 +243,35 @@
     font-weight: 200; /* Adjust as desired */
   }
   
+  .text-experience-white {
+    font-weight: 300; /* Adjust as desired */
+  }
+  
   .text-contact {
     font-weight: 200; /* Adjust as desired */
   }
   
   /* Styles for FAQ section */
   .faq-section {
-    margin-top: 20px;
-    text-align: center;
+    /* Optional: add padding or other styles if needed */
+  }
+  
+  .faq-pair {
+    margin-bottom: 20px; /* Adjust the spacing between pairs as desired */
   }
   
   .faq-question {
     font-weight: 400;
     margin-top: 0px;
-    padding-top: 50px;
   }
   
   .faq-answer {
     font-weight: 200;
-    margin-bottom: 10px;
+    margin-bottom: 0px; /* Removed to handle spacing via .faq-pair */
   }
   
   .contact-links {
     display: flex;
-    justify-content: center;
     gap: 20px;
     margin-top: 10px;
   }
@@ -243,11 +300,12 @@
     align-items: center;
     flex-direction: column;
     color: #fff;
-    text-align: center;
+    text-align: left;
     width: 100%;
     max-width: 800px;
     margin: 0 auto;
-    padding-bottom: 200px;
+    padding: 50px 0px;
+    overflow-y: auto;
   }
   
   /* Ensure links in content area appear underlined */
@@ -258,8 +316,6 @@
   
   .project-links {
     display: flex;
-    justify-content: center;
-    align-items: center;
     gap: 20px;
     margin-top: 10px;
   }
@@ -270,6 +326,15 @@
   
   p {
     font-weight: 300;
+  }
+  
+  .tech-stack-container {
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+    padding: 5px 20px; /* Adjust padding as needed */
+    border-radius: 0px; /* Rounded corners */
+    color: #000; /* Black text */
+    margin-bottom: 20px; /* Space below the container */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow for depth */
   }
   </style>
   

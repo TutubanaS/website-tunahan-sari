@@ -30,8 +30,8 @@ export default {
 .rectangle {
   /* Existing styles */
   position: relative;
-  width: calc(1568 / 1728 * 100vw);
-  height: calc(925 / 1117 * 100vh);
+  width: 95vw;
+  height: 88vh;
   max-width: 100%;
   max-height: 100%;
   margin: auto;
